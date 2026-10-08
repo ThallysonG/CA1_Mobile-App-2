@@ -3,45 +3,46 @@ package com.example.ca1_ma2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.example.ca1_ma2.ui.theme.CA1_MA2Theme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.ca1_ma2.screens.HomeScreen
+import com.example.ca1_ma2.screens.RegistrationScreen
+import com.example.ca1_ma2.screens.StudentSearchScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             CA1_MA2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            var currentScreen by remember {
+                mutableStateOf("home")
+            }
+            when (currentScreen) {
+                "home" -> {
+                    HomeScreen(
+                        onRegistrationClick = {
+                            currentScreen = "registration"
+                        },
+                        onStudentSearchClick = {
+                            currentScreen = "search"
+                        })
                 }
+
+                "registration" -> {
+                    RegistrationScreen()
+                }
+
+                "search" -> {
+                    StudentSearchScreen()
+                }
+            }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CA1_MA2Theme {
-        Greeting("Android")
-    }
-}
